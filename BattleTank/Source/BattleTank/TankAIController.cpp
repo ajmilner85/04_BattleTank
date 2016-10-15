@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "Tank.h"
 #include "TankAIController.h"
 
 void ATankAIController::Tick(float DeltaTime)
@@ -11,7 +12,7 @@ void ATankAIController::Tick(float DeltaTime)
 		// TODO Move toward the player
 
 		// Aim at the player
-		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+		//GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
 
 		// Fire if ready
 	}

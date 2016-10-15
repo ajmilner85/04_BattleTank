@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "Tank.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::BeginPlay()
@@ -35,12 +36,9 @@ void ATankPlayerController::AimTowardCrosshair()
 	if (!GetControlledTank()) { return; }
 
 	FVector HitLocation; // Out parameter, as such not initialized
-	if (GetSightRayHitLocation(HitLocation)) 
-	{	
-		if (GetSightRayHitLocation(HitLocation))
-		{
-			GetControlledTank()->AimAt(HitLocation);
-		}
+	if (GetSightRayHitLocation(HitLocation))
+	{
+		GetControlledTank()->AimAt(HitLocation);
 	}
 }
 
@@ -80,8 +78,14 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 		// If collides with world
 		if (HitResult.IsValidBlockingHit()) {
 			HitLocation = HitResult.Location;
+			//double Time = GetWorld()->GetTimeSeconds();
+			//UE_LOG(LogTemp, Warning, TEXT("%f - Have aim solution? True"), Time );
+			//UE_LOG(LogTemp, Warning, TEXT("World Collision"));
 			return true;
 		}
+		//double Time = GetWorld()->GetTimeSeconds();
+		//UE_LOG(LogTemp, Warning, TEXT("%f - Have aim solution? False"), Time);
+		//UE_LOG(LogTemp, Warning, TEXT("NO World Collision"));
 	}
 	return false;
 }
