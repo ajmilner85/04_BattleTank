@@ -13,9 +13,9 @@ void ATankPlayerController::BeginPlay()
 	// Test if player controller is posessing a tank
 	auto ControlledTank = GetControlledTank();
 	if (!ControlledTank) {
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController not possessing a tank"));
+		//UE_LOG(LogTemp, Warning, TEXT("PlayerController not possessing a tank"));
 	}
-	UE_LOG(LogTemp, Warning, TEXT("PlayerController possessing %s"), *ControlledTank->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("PlayerController possessing %s"), *ControlledTank->GetName());
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -49,9 +49,9 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	double CrosshairXLocation = 0.5;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	double CrosshairYLocation = 0.3333;
 
 	FVector2D ScreenLocation = FVector2D(

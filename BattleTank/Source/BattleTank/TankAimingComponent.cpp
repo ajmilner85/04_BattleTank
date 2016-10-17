@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "TankAimingComponent.h"
 
 
@@ -11,14 +12,21 @@ UTankAimingComponent::UTankAimingComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = true; // TODO Should this really tick?
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
+	if (!BarrelToSet) { return; }
 	Barrel = BarrelToSet;
+}
+
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
+{
+	if (!TurretToSet) { return; }
+	Turret = TurretToSet;
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
@@ -50,7 +58,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 		auto AimDirection = LaunchVelocity.GetSafeNormal();
 		MoveBarrelToward(AimDirection);
-		// UE_LOG(LogTemp, Warning, TEXT("%f - Aim Solution Found"), Time);
+		//UE_LOG(LogTemp, Warning, TEXT("%s - Aim Solution Found"), *GetOwner()->GetName());
 	}
 }
 
@@ -59,14 +67,6 @@ void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-
-	// TODO clean up pseudocode
-	// Get current Barrel rotation unit vector z component
-	// If barrel unit rotation unit vector z component does not equal the AimDirection unit vector
-	// Start moving barrel toward desired elevation at desired speed
-
-	// Ben
-	// Work-out difference between current barrel rotation and aim direction
-
-	Barrel->Elevate(5); // TODO remove magic number
+	Barrel->Elevate(DeltaRotator.Pitch);
+	Turret->Rotate(DeltaRotator.Yaw);
 }
